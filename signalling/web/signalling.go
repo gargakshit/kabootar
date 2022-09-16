@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/websocket/v2"
 )
 
-func (h *handler) InitializeWS(c *fiber.Ctx) error {
+func (*handler) InitializeWS(c *fiber.Ctx) error {
 	if websocket.IsWebSocketUpgrade(c) {
 		return c.Next()
 	}

@@ -74,7 +74,7 @@ func (p *ProtoSCMsgPayload) Marshal() []string {
 
 type ProtoSCGonePayload struct{}
 
-func (p *ProtoSCGonePayload) Marshal() []string {
+func (*ProtoSCGonePayload) Marshal() []string {
 	return []string{strconv.Itoa(ProtoSCGone)}
 }
 
