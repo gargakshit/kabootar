@@ -1,6 +1,9 @@
 import { Component, JSX, createSignal } from "solid-js";
+import type { EventHandlerUnion } from "../utils/events";
+
 
 const PrimaryButton: Component<{
+  onClick: EventHandlerUnion<HTMLButtonElement, MouseEvent>;
   children: JSX.Element;
   class?: string;
 }> = (props) => {
@@ -17,6 +20,7 @@ const PrimaryButton: Component<{
         z-50
         ${props.class ? props.class : ""}
       `}
+      onClick={props.onClick}
     >
       {props.children}
     </button>
