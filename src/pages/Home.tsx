@@ -28,7 +28,7 @@ const HomePage: Component = () => {
         >
           Share a file
         </PrimaryButton>
-        <SexyButton class="w-52">Discover</SexyButton>
+        <SexyButton class="w-52" href="/discover" >Discover</SexyButton>
       </div>
     </div>
   );
