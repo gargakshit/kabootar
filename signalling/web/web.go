@@ -12,7 +12,7 @@ func InitWeb(address string) error {
 
 	app.Use(cors.New(cors.Config{
 		AllowHeaders:     "Content-Type, Access-Control-Allow-Origin",
-		AllowOrigins:     "*",
+		AllowOrigins:     "*", // TODO(AG): fix this
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST",
 	}))
