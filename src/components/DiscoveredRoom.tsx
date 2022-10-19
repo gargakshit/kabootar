@@ -1,6 +1,6 @@
 import { type Component } from "solid-js";
 
-const RoomItem: Component<{
+const DiscoveredRoom: Component<{
   backdrop: string;
   emoji: string;
   name: string;
@@ -29,4 +29,4 @@ const RoomItem: Component<{
   );
 };
 
-export default RoomItem;
+export default DiscoveredRoom;
