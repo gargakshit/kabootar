@@ -14,3 +14,11 @@ enabled = true
   [analyzers.meta]
   dialect = "typescript"
   module_system = "es-modules"
+
+[[transformers]]
+name = "gofumpt"
+enabled = true
+
+[[transformers]]
+name = "prettier"
+enabled = true
