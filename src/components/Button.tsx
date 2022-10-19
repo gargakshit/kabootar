@@ -1,8 +1,7 @@
 import { Component, JSX } from "solid-js";
-import type { EventHandlerUnion } from "../utils/events";
 
 const PrimaryButton: Component<{
-  onClick?: EventHandlerUnion<HTMLButtonElement, MouseEvent>;
+  onClick?: JSX.DOMAttributes<HTMLButtonElement>["onClick"];
   disabled?: boolean;
   children: JSX.Element;
   class?: string;
@@ -29,7 +28,7 @@ const PrimaryButton: Component<{
 };
 
 const SexyButton: Component<{
-  onClick?: EventHandlerUnion<HTMLButtonElement, MouseEvent>;
+  onClick?: JSX.DOMAttributes<HTMLButtonElement>["onClick"];
   disabled?: boolean;
   children: JSX.Element;
   class?: string;
