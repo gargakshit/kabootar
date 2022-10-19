@@ -32,7 +32,6 @@ const SexyButton: Component<{
   disabled?: boolean;
   children: JSX.Element;
   class?: string;
-  href?: string;
 }> = (props) => {
   return (
     <div class="relative">
@@ -50,25 +49,22 @@ const SexyButton: Component<{
           ${props.class ? props.class : ""}
         `}
         disabled={props.disabled}
-        // on click navigate to discover page
         onClick={props.onClick}
       >
-        <a href={props.href}>
-          <div
-            class="
-          button-sexy-div-p
-          rounded-md
-          py-[0.875rem]
-          bg-black
-          hover:bg-transparent
-          hover:text-black
-          transition-colors
-          duration-200
-        "
-          >
-            {props.children}
-          </div>
-        </a>
+        <div
+          class="
+            button-sexy-div-p
+            rounded-md
+            py-[0.875rem]
+            bg-black
+            hover:bg-transparent
+            hover:text-black
+            transition-colors
+            duration-200
+          "
+        >
+          {props.children}
+        </div>
       </button>
     </div>
   );

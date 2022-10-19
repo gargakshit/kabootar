@@ -1,9 +1,12 @@
+import { Title } from "@solidjs/meta";
+import { useNavigate } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
 
 import { PrimaryButton, SexyButton } from "../components/Button";
 import Room from "../connection/room";
 
 const HomePage: Component = () => {
+  const navigate = useNavigate();
   const [shareDisabled, setShareDisabled] = createSignal(false);
 
   const createRoom = async () => {
@@ -14,6 +17,8 @@ const HomePage: Component = () => {
 
   return (
     <div class="h-full flex flex-col items-center justify-center">
+      <Title>Kabootar</Title>
+
       <h1 class="heading text-6xl md:text-8xl font-extrabold tracking-tight text-goo">
         Kabootar
       </h1>
@@ -28,7 +33,12 @@ const HomePage: Component = () => {
         >
           Share a file
         </PrimaryButton>
-        <SexyButton class="w-52" href="/discover">
+        <SexyButton
+          class="w-52"
+          onClick={() => {
+            navigate("/discover");
+          }}
+        >
           Discover
         </SexyButton>
       </div>
