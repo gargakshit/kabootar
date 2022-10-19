@@ -1,0 +1,6 @@
+[*.ts,*.tsx,*.html,*.css,*.js]
+indent_size = 2
+indent_style = space
+
+[*.go]
+indent_style = tab
