@@ -1,4 +1,5 @@
-import { Component, JSX } from "solid-js";
+import { type Component } from "solid-js";
+
 import Emoji from "./Emoji";
 
 const RoomItem: Component<{

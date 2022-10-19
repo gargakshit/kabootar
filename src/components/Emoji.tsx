@@ -1,12 +1,14 @@
-import { Component, JSX } from "solid-js";
+import { type Component } from "solid-js";
 
 // Create a circle with a radius of 100 with a random emoji in the middle
-const Emoji: Component<{ emoji: string; backdrop?: string; class?: string }> = (props) => {
-    return (
-        <div
-            style={`background: ${props.backdrop ? props.backdrop : "#fff"};`}
-            class={`
-        ${props.class ? props.class : ""}
+const Emoji: Component<{ emoji: string; backdrop?: string; class?: string }> = (
+  props
+) => {
+  return (
+    <div
+      style={`background: ${props.backdrop ?? "#fff"};`}
+      class={`
+        ${props.class ?? ""}
         w-[48px]
         h-[48px]
         text-[26px]
@@ -17,10 +19,10 @@ const Emoji: Component<{ emoji: string; backdrop?: string; class?: string }> = (
         rounded-full
         font-bold
       `}
-        >
-            {props.emoji}
-        </div>
-    );
+    >
+      {props.emoji}
+    </div>
+  );
 };
 
 export default Emoji;

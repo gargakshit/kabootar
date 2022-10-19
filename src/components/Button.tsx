@@ -53,7 +53,6 @@ const SexyButton: Component<{
         disabled={props.disabled}
         // on click navigate to discover page
         onClick={props.onClick}
-
       >
         <a href={props.href}>
           <div
