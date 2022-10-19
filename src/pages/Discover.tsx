@@ -12,9 +12,11 @@ const rooms = [
 
 const DiscoverPage: Component = () => {
   return (
-    <div class="px-20 pt-20">
-      <h1 class="font-bold text-5xl heading">Discovering...</h1>
-      <p class="mt-2 mb-14">Finding nearby shares</p>
+    <div class="px-12 pt-16 lg:px-20 lg:pt-20">
+      <h1 class="font-bold text-4xl lg:text-5xl heading">Discovering...</h1>
+      <p class="text-sm lg:text-base lg:mt-2 mb-8 lg:mb-12">
+        Finding nearby shares
+      </p>
       {rooms.map((room) => (
         <RoomItem
           emoji={room.emoji}
