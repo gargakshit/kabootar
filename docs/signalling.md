@@ -21,10 +21,9 @@ Once a room has been created a `GET` request is made to the `/ws/:room_id` route
 
 ## How does the client initialize a websocket connection?
 
-1. The client makes a HTTP request with a Websocket upgrade header with a `room_id` parameter to the  "/ws/:room_id" route.
+1. The client makes a HTTP request with a Websocket upgrade header with a `room_id` parameter to the "/ws/:room_id" route.
 2. The server checks if request is Websocket, if not it returns a 400 for Plain HTTP error.
 3. The server then handles websocket request and upgrades the connection to a websocket connection.
 4. It closes the connection if the room does not exist
 5. If the client is the master peer, it sets the websocket connection to the `Master` field of the room.
 6. If the client is a client peer, it adds the websocket connection to the `Clients` map of the room.
-
