@@ -1,0 +1,78 @@
+{
+    "short_name": "Kabootar",
+    "name": "Kabootar",
+    "icons": [
+        {
+            "src": "/src/images/icon-transparent.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/",
+    "background_color": "#000",
+    "display": "fullscreen",
+    "scope": "/",
+    "theme_color": "#000",
+    "shortcuts": [
+        {
+            "name": "Share a file.",
+            "short_name": "Share",
+            "description": "Share a file with your friends.",
+            "url": "/",
+            "icons": [{ "src": "/src/images/icon.png", "sizes": "512x512" }]
+        },
+        {
+            "name": "Discover shares.",
+            "short_name": "Discover",
+            "description": "Discover room to receive files.",
+            "url": "/discover",
+            "icons": [{ "src": "/src/images/icon.png", "sizes": "512x512" }]
+        }
+    ],
+    "description": "Kabootar is a file sharing app that allows you to share files with your friends securely and in a moment through our peer-to-peer technology.",
+    "screenshots": [
+        {
+            "src": "/src/images/Screenshots/Homepage-mobile.png",
+            "type": "image/png",
+            "sizes": "1081x2340"
+        },
+        {
+            "src": "/src/images/Screenshots/Homepage-PC.png",
+            "type": "image/png",
+            "sizes": "2940x1532"
+        },
+        {
+            "src": "/src/images/Screenshots/Download-mobile.png",
+            "type": "image/png",
+            "sizes": "1081x2340"
+        },
+        {
+            "src": "/src/images/Screenshots/Download-PC.png",
+            "type": "image/png",
+            "sizes": "2940x1418"
+        },
+        {
+            "src": "/src/images/Screenshots/Share-mobile.png",
+            "type": "image/png",
+            "sizes": "2940x1532"
+        },
+        {
+            "src": "/src/images/Screenshots/Share-PC.png",
+            "type": "image/png",
+            "sizes": "1081x2340"
+        }
+    ],
+    "share_target": {
+        "action": "/",
+        "method": "GET",
+        "enctype": "multipart/form-data",
+        "params": {
+            "files": [
+                {
+                    "name": "file",
+                    "accept": ["image/*", "audio/*", "video/*", "application/*"]
+                }
+            ]
+        }
+    }
+}
