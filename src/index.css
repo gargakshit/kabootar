@@ -33,6 +33,37 @@ body {
   padding: calc(0.875rem - 4px) calc(3rem - 4px);
 }
 
+/* CSS for Drag and Drop */
+
+.drop-model {
+  height: 100%;
+  width: 100%;
+  /* align the contents inside to center */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.drop-text {
+  /* must always be 15px above the bottom of view-height */
+  position: absolute;
+  bottom: 2rem;
+}
+
+.background-element {
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.foreground-element {
+  z-index: 50;
+  opacity: 1;
+}
+
+.goo-head {
+  z-index: 100;
+}
+
 .emoji {
   @apply min-w-[48px] min-h-[48px] max-w-[48px] max-h-[48px]
   text-[26px] text-center flex items-center justify-center
