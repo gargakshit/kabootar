@@ -81,6 +81,13 @@ const PinEntryDialog: Component<{
                       setPin("");
                       props.onClickConnect(currPin);
                     }}
+                    onKeyUp={(e) => {
+                      if (e.key === "Enter") {
+                        const currPin = pin();
+                        setPin("");
+                        props.onClickConnect(currPin);
+                      }
+                    }}
                   >
                     Connect
                   </button>
