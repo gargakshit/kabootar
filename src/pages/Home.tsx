@@ -62,9 +62,6 @@ const HomePage: Component = () => {
     }
   }
 
-  const handleDrop2 = async (e: DragEvent) => {
-    console.log(e.type);
-  }
 
   return (
     <div class="h-full flex flex-col items-center justify-center">
@@ -106,8 +103,7 @@ const HomePage: Component = () => {
         onDragEnter={handleDrag}
         ondragover={handleDrag}
         onDragLeave={handleDrag}
-        onDrop={handleDrop}
-        ondrop={handleDrop2} >
+        onDrop={handleDrop} >
         <div class="absolute inset-0 bg-black opacity-50" />
         <div class="drop-model rounded-lg shadow-lg">
           <h1 class="text-2xl font-bold drop-text text-goo">Drop the file here to share.</h1>
