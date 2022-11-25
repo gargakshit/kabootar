@@ -52,9 +52,8 @@ const HomePage: Component = () => {
   };
 
   const handleDrop = async (e: DragEvent) => {
-    console.log(e.type);
-
     if (e.type === "drop") {
+      e.preventDefault();
       if (e.dataTransfer.files.length >= 1) {
         const file = e.dataTransfer.files[0];
         await handleFile(file);
