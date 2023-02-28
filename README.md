@@ -72,20 +72,9 @@ Inside the `signalling` directory:
    configuration values inside it
 1. `./out/rendezvous`
 
-### Web-app
+### Web
 
 1. Modify the `src/config.ts` to change the `baseURL` to `http://localhost:3000`
    and flip `secure` to `false`
 1. Run `yarn install --frozen-lockfile`
 1. Run `yarn dev`
-
-## People
-
-| Name                 | Roll Number |
-| -------------------- | ----------- |
-| Akshit Garg          | 2010110065  |
-| Amaan                | 2010110072  |
-| Ayaan                | 2010110174  |
-| Charuhas Reddy Balam | 2010110204  |
-| Megh Rathod          | 2010110393  |
-| Jigar Italiya        | 2010110319  |
