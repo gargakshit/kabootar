@@ -13,7 +13,10 @@ export class StreamFileDownloader implements FileDownloader {
   controller: ReadableStreamController<ArrayBuffer>;
   seed: number;
 
-  constructor(public name: string, public size: number) {
+  constructor(
+    public name: string,
+    public size: number,
+  ) {
     this.sw = navigator.serviceWorker.controller;
   }
 
@@ -52,7 +55,7 @@ export class StreamFileDownloader implements FileDownloader {
           stream: stream,
         } as DownloadableStreamMetadata,
       },
-      [channel.port2, stream]
+      [channel.port2, stream],
     );
 
     const url = await new Promise<string>((resolve) => {
