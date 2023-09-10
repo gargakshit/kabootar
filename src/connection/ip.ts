@@ -16,6 +16,8 @@ export function getPublicIP(): Promise<string> {
         const [ip] = ipRegex.exec(event.candidate.candidate);
         if (isPublicIP(ip)) {
           address = ip;
+          pc.close();
+          resolve(address);
         }
       }
     });
@@ -23,9 +25,7 @@ export function getPublicIP(): Promise<string> {
     pc.addEventListener("icegatheringstatechange", () => {
       if (pc.iceGatheringState === "complete") {
         pc.close();
-        if (address !== undefined) {
-          resolve(address);
-        } else {
+        if (address === undefined) {
           reject("unable to get public IP");
         }
       }

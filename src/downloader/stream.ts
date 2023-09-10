@@ -52,7 +52,7 @@ export class StreamFileDownloader implements FileDownloader {
           stream: stream,
         } as DownloadableStreamMetadata,
       },
-      [channel.port2, stream as unknown as Transferable]
+      [channel.port2, stream]
     );
 
     const url = await new Promise<string>((resolve) => {
