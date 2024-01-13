@@ -7,7 +7,7 @@ class Discovery {
   private constructor(
     private ws: WebSocket,
     private added: (room: DiscoveredRoomItem) => void,
-    private removed: (id: string) => void
+    private removed: (id: string) => void,
   ) {
     ws.addEventListener("message", this.messageListener.bind(this));
     ws.addEventListener("close", this.closeListener.bind(this));
@@ -15,7 +15,7 @@ class Discovery {
 
   static async connect(
     added: (room: DiscoveredRoomItem) => void,
-    removed: (id: string) => void
+    removed: (id: string) => void,
   ): Promise<Discovery | undefined> {
     try {
       const ip = await getPublicIP();

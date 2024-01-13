@@ -33,7 +33,7 @@ class Room<Master extends boolean> {
     public file: Master extends true ? File : undefined,
     eventDispatcher: RoomEventDispatcher<Master>,
     turnServer: string,
-    public pin?: string
+    public pin?: string,
   ) {
     this.handler = isMaster
       ? new MasterHandler(
@@ -44,14 +44,14 @@ class Room<Master extends boolean> {
           emoji,
           clientKey,
           turnServer,
-          id
+          id,
         )
       : new ClientHandler(
           ws,
           eventDispatcher as RoomEventDispatcher<false>,
           id,
           clientKey,
-          turnServer
+          turnServer,
         );
 
     ws.addEventListener("close", this.handleClose.bind(this));
@@ -59,7 +59,7 @@ class Room<Master extends boolean> {
 
   static async create(
     file: File,
-    dispatcher: RoomEventDispatcher<true>
+    dispatcher: RoomEventDispatcher<true>,
   ): Promise<Room<true> | undefined> {
     const response = await fetch(RT.room, {
       method: "POST",
@@ -87,14 +87,14 @@ class Room<Master extends boolean> {
       file,
       dispatcher,
       ws[1],
-      pin
+      pin,
     );
   }
 
   static async joinDirect(
     id: string,
     key: string,
-    dispatcher: RoomEventDispatcher<false>
+    dispatcher: RoomEventDispatcher<false>,
   ): Promise<Room<false> | undefined> {
     const ws = await this.initWS(id, key, false);
     if (ws === undefined) {
@@ -111,7 +111,7 @@ class Room<Master extends boolean> {
       undefined,
       dispatcher,
       ws[1],
-      undefined
+      undefined,
     );
   }
 
@@ -122,7 +122,7 @@ class Room<Master extends boolean> {
       params.set("pin", pin);
 
       const response = await fetch(`${RT.room}?${params.toString()}`).then(
-        (res) => res.json()
+        (res) => res.json(),
       );
 
       return response[0];
@@ -134,10 +134,10 @@ class Room<Master extends boolean> {
   static async initWS(
     id: string,
     key: string,
-    isMaster: boolean
+    isMaster: boolean,
   ): Promise<[WebSocket, string] | undefined> {
     const ws = new WebSocket(
-      `${RT.roomWSBase}/${id}?k=${key}&m=${isMaster ? "t" : "f"}`
+      `${RT.roomWSBase}/${id}?k=${key}&m=${isMaster ? "t" : "f"}`,
     );
 
     const canConnect = await new Promise<false | [true, string]>((resolve) => {
@@ -208,7 +208,7 @@ class MasterHandler {
     private emoji: string,
     private clientKey: string,
     private turnServer: string,
-    private roomID: string
+    private roomID: string,
   ) {
     ws.addEventListener("message", this.handleMessage.bind(this));
     this.clients = new Map();
@@ -260,8 +260,8 @@ class MasterHandler {
         },
         this.clientKey,
         this.turnServer,
-        this.roomID
-      )
+        this.roomID,
+      ),
     );
     this.dispatcher.numClientsChanged(this.clients.size);
   }
@@ -323,7 +323,7 @@ class MasterClient {
     private onClose: () => void,
     private clientKey: string,
     private turnServer: string,
-    private roomID: string
+    private roomID: string,
   ) {
     this.closed = false;
 
@@ -336,7 +336,7 @@ class MasterClient {
     this.pc.addEventListener("icecandidate", this.onIceCandidate.bind(this));
     this.pc.addEventListener(
       "connectionstatechange",
-      this.onConnectionStateChange.bind(this)
+      this.onConnectionStateChange.bind(this),
     );
 
     this.createDataChannel();
@@ -377,11 +377,11 @@ class MasterClient {
     this.dataChannel.addEventListener("open", this.dataChannelOpen.bind(this));
     this.dataChannel.addEventListener(
       "close",
-      this.metaChannelClose.bind(this)
+      this.metaChannelClose.bind(this),
     );
     this.dataChannel.addEventListener(
       "message",
-      this.handleDataChannelMessage.bind(this)
+      this.handleDataChannelMessage.bind(this),
     );
   }
 
@@ -398,7 +398,7 @@ class MasterClient {
     if (event.candidate) {
       this.sendSignal(
         this.id,
-        JSON.stringify([MasterClientSignal.TRICKLE_ICE, event.candidate])
+        JSON.stringify([MasterClientSignal.TRICKLE_ICE, event.candidate]),
       );
     }
   }
@@ -424,7 +424,7 @@ class MasterClient {
     await this.pc.setLocalDescription(offer);
     this.sendSignal(
       this.id,
-      JSON.stringify([MasterClientSignal.OFFER, this.pc.localDescription])
+      JSON.stringify([MasterClientSignal.OFFER, this.pc.localDescription]),
     );
   }
 
@@ -520,7 +520,7 @@ class ClientHandler {
     private dispatcher: RoomEventDispatcher<false>,
     private id: string,
     private clientKey: string,
-    private turnServer: string
+    private turnServer: string,
   ) {
     ws.addEventListener("message", this.handleMessage.bind(this));
     this.dispatcher.connectionStatusChanged(false);
@@ -559,7 +559,7 @@ class ClientHandler {
   private onIceCandidate(event: RTCPeerConnectionIceEvent) {
     if (event.candidate) {
       this.sendSignal(
-        JSON.stringify([ClientMasterSignal.TRICKLE_ICE, event.candidate])
+        JSON.stringify([ClientMasterSignal.TRICKLE_ICE, event.candidate]),
       );
     }
   }
@@ -571,7 +571,7 @@ class ClientHandler {
       this.dataChannel.binaryType = "arraybuffer";
       this.dataChannel.addEventListener(
         "message",
-        this.onDataChannelMessage.bind(this)
+        this.onDataChannelMessage.bind(this),
       );
     }
   }
@@ -593,7 +593,7 @@ class ClientHandler {
 
   private async handleMetadata(view: Uint8Array) {
     const [name, size, roomName, emoji] = JSON.parse(
-      new TextDecoder().decode(view)
+      new TextDecoder().decode(view),
     );
     this.metadata = { name, size };
     this.dispatcher.roomMetaChanged(name, roomName, emoji);
@@ -624,7 +624,7 @@ class ClientHandler {
     }
 
     this.dispatcher.receivePercentageChanged(
-      Math.floor((this.received * 100) / this.metadata.size)
+      Math.floor((this.received * 100) / this.metadata.size),
     );
 
     if (this.received === this.metadata.size) {
@@ -693,7 +693,7 @@ class ClientHandler {
     const answer = await this.pc.createAnswer();
     await this.pc.setLocalDescription(answer);
     this.sendSignal(
-      JSON.stringify([ClientMasterSignal.ANSWER, this.pc.localDescription])
+      JSON.stringify([ClientMasterSignal.ANSWER, this.pc.localDescription]),
     );
   }
 
