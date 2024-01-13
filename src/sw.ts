@@ -45,7 +45,7 @@ self.addEventListener("fetch", (event) => {
     "Content-Type": "application/octet-stream",
     "Content-Length": stream.size.toString(),
     "Content-Disposition": `attachment; filename="${encodeURIComponent(
-      stream.name
+      stream.name,
     )}"`,
   });
 

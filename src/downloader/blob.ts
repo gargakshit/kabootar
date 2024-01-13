@@ -3,7 +3,10 @@ import { FileDownloader } from "./index";
 export class BlobFileDownloader implements FileDownloader {
   private parts: ArrayBuffer[];
 
-  constructor(public name: string, public size: number) {}
+  constructor(
+    public name: string,
+    public size: number,
+  ) {}
 
   // skipcq: JS-0116, JS-0376
   async initialize() {

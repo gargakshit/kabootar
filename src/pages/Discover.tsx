@@ -24,7 +24,7 @@ const DiscoverHeader: Component = () => {
     setTimer(
       setInterval(() => {
         setDots(dots().length === 3 ? "" : `${dots()}.`);
-      }, 200) as unknown as number
+      }, 200) as unknown as number,
     );
   });
 
@@ -52,7 +52,7 @@ const DiscoverPage: Component = () => {
     },
     (id) => {
       setRooms(id, undefined);
-    }
+    },
   ).then((c) => {
     setClient(c);
   });
