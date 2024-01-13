@@ -1,4 +1,4 @@
-import { Route, Router, Routes } from "@solidjs/router";
+import { Navigate, Route, Router, Routes } from "@solidjs/router";
 import { MetaProvider } from "@solidjs/meta";
 import type { Component } from "solid-js";
 
@@ -15,6 +15,7 @@ const App: Component = () => {
             <Route path="/" component={HomePage} />
             <Route path="/discover" component={DiscoverPage} />
             <Route path="/:id" component={SharePage} />
+            <Route path="*404" component={() => <Navigate href="/" />} />
           </Routes>
         </Router>
       </main>

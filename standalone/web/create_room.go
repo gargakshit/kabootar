@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/gargakshit/kabootar/signalling/util"
+	"github.com/gargakshit/kabootar/util"
 	"github.com/gofiber/fiber/v2"
 )
 

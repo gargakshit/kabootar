@@ -1,7 +1,7 @@
 package web
 
 import (
-	"github.com/gargakshit/kabootar/signalling/util"
+	"github.com/gargakshit/kabootar/util"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
 )

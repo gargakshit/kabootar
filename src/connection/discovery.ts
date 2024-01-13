@@ -1,5 +1,5 @@
 import { getPublicIP } from "./ip";
-import { baseURL, wsScheme } from "../config";
+import { RT } from "../config";
 import { type DiscoveredRoomItem } from "../types/room";
 import { emojiBackground } from "../utils/emoji";
 
@@ -7,7 +7,7 @@ class Discovery {
   private constructor(
     private ws: WebSocket,
     private added: (room: DiscoveredRoomItem) => void,
-    private removed: (id: string) => void
+    private removed: (id: string) => void,
   ) {
     ws.addEventListener("message", this.messageListener.bind(this));
     ws.addEventListener("close", this.closeListener.bind(this));
@@ -15,11 +15,11 @@ class Discovery {
 
   static async connect(
     added: (room: DiscoveredRoomItem) => void,
-    removed: (id: string) => void
+    removed: (id: string) => void,
   ): Promise<Discovery | undefined> {
     try {
       const ip = await getPublicIP();
-      const ws = new WebSocket(`${wsScheme}${baseURL}/discover?ip=${ip}`);
+      const ws = new WebSocket(`${RT.disvover}?ip=${ip}`);
 
       return new Discovery(ws, added, removed);
     } catch (e) {

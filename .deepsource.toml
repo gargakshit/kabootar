@@ -5,7 +5,7 @@ name = "go"
 enabled = true
 
   [analyzers.meta]
-  import_root = "github.com/gargakshit/kabootar/signalling"
+  import_root = "github.com/gargakshit/kabootar/standalone"
 
 [[analyzers]]
 name = "javascript"
