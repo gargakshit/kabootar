@@ -13,6 +13,13 @@ type Config struct {
 	TurnPort      int    `toml:"turn_port"`
 }
 
+func NewConfigFromString(data string) (*Config, error) {
+	config := &Config{}
+	_, err := toml.Decode(data, config)
+
+	return config, err
+}
+
 func NewConfig(filePath string) (*Config, error) {
 	config := &Config{}
 	_, err := toml.DecodeFile(filePath, config)

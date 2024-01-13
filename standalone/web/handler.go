@@ -2,19 +2,20 @@ package web
 
 import (
 	"errors"
+	"log/slog"
 	"strconv"
 
-	"github.com/gargakshit/kabootar/signalling/config"
-	"github.com/gargakshit/kabootar/signalling/util"
+	"github.com/gargakshit/kabootar/config"
+	"github.com/gargakshit/kabootar/util"
 	"github.com/gofiber/websocket/v2"
 	"github.com/pion/turn/v2"
 	"github.com/puzpuzpuz/xsync"
 )
 
 type handler struct {
-	rooms            *xsync.MapOf[*Room]
-	discoverable     *xsync.MapOf[map[*Room]struct{}]
-	discoveryClients *xsync.MapOf[map[*websocket.Conn]struct{}]
+	rooms            *xsync.MapOf[string, *Room]
+	discoverable     *xsync.MapOf[string, map[*Room]struct{}]
+	discoveryClients *xsync.MapOf[string, map[*websocket.Conn]struct{}]
 	cfg              *config.Config
 	turnServer       *turn.Server
 	turnURL          string
@@ -46,6 +47,8 @@ func (h *handler) newRoom() (string, *Room, error) {
 }
 
 func (h *handler) makeDiscoverable(ip string, room *Room) {
+	slog.Info("Making room discoverable", slog.String("ip", ip), slog.String("room", room.ID))
+
 	rooms, ok := h.discoverable.Load(ip)
 	if !ok {
 		rooms = make(map[*Room]struct{})
@@ -58,6 +61,8 @@ func (h *handler) makeDiscoverable(ip string, room *Room) {
 }
 
 func (h *handler) registerDiscoveryClient(ip string, conn *websocket.Conn) {
+	slog.Info("Registering discovery client", slog.String("ip", ip))
+
 	clients, ok := h.discoveryClients.Load(ip)
 	if !ok {
 		clients = make(map[*websocket.Conn]struct{})
@@ -77,6 +82,8 @@ func (h *handler) registerDiscoveryClient(ip string, conn *websocket.Conn) {
 }
 
 func (h *handler) unregisterDiscoveryClient(ip string, conn *websocket.Conn) {
+	slog.Info("Unregistering discovery client", slog.String("ip", ip))
+
 	clients, ok := h.discoveryClients.Load(ip)
 	if !ok {
 		return
@@ -86,6 +93,13 @@ func (h *handler) unregisterDiscoveryClient(ip string, conn *websocket.Conn) {
 }
 
 func (h *handler) notifyDiscoveryClients(ip string, added bool, room *Room) {
+	slog.Info(
+		"Notifying discovery clients",
+		slog.String("ip", ip),
+		slog.String("room", room.ID),
+		slog.Bool("added", added),
+	)
+
 	clients, ok := h.discoveryClients.Load(ip)
 	if !ok {
 		return
@@ -113,21 +127,51 @@ func (h *handler) joinRoom(
 	isMaster bool,
 	conn *websocket.Conn,
 ) (bool, string) {
+	slog.Info(
+		"Room join request",
+		slog.String("room", roomID),
+		slog.Bool("is_master", isMaster),
+	)
+
 	if key == "" {
+		slog.Debug(
+			"Rejecting room join request",
+			slog.String("room", roomID),
+			slog.Bool("is_master", isMaster),
+			slog.String("reason", "empty key"),
+		)
 		return false, ""
 	}
 
 	room, exists := h.getRoom(roomID)
 	if !exists {
+		slog.Debug(
+			"Rejecting room join request",
+			slog.String("room", roomID),
+			slog.Bool("is_master", isMaster),
+			slog.String("reason", "room doesn't exist"),
+		)
 		return false, ""
 	}
 
 	if isMaster {
 		if room.MKey != key {
+			slog.Debug(
+				"Rejecting room join request",
+				slog.String("room", roomID),
+				slog.Bool("is_master", isMaster),
+				slog.String("reason", "invalid master key"),
+			)
 			return false, ""
 		}
 
 		if room.Master != nil {
+			slog.Debug(
+				"Rejecting room join request",
+				slog.String("room", roomID),
+				slog.Bool("is_master", isMaster),
+				slog.String("reason", "duplicate master"),
+			)
 			return false, ""
 		}
 
@@ -136,25 +180,58 @@ func (h *handler) joinRoom(
 	}
 
 	if room.CKey != key {
+		slog.Debug(
+			"Rejecting room join request",
+			slog.String("room", roomID),
+			slog.Bool("is_master", isMaster),
+			slog.String("reason", "invalid client key"),
+		)
 		return false, ""
 	}
 
 	if room.Master == nil {
+		slog.Debug(
+			"Rejecting room join request",
+			slog.String("room", roomID),
+			slog.Bool("is_master", isMaster),
+			slog.String("reason", "no room master"),
+		)
 		return false, ""
 	}
 
 	clientID, err := util.GenerateRandomString(8)
 	if err != nil {
+		slog.Error(
+			"Rejecting room join request",
+			slog.String("room", roomID),
+			slog.Bool("is_master", isMaster),
+			slog.String("err", err.Error()),
+			slog.String("reason", "client id generation failed"),
+		)
 		return false, ""
 	}
 
 	msg, err := MarshalSMsg(&ProtoSMJoinedPayload{ClientID: clientID})
 	if err != nil {
+		slog.Error(
+			"Rejecting room join request",
+			slog.String("room", roomID),
+			slog.Bool("is_master", isMaster),
+			slog.String("err", err.Error()),
+			slog.String("reason", "protocol message marshal failed"),
+		)
 		return false, ""
 	}
 
 	err = room.Master.WriteMessage(1, msg)
 	if err != nil {
+		slog.Error(
+			"Rejecting room join request",
+			slog.String("room", roomID),
+			slog.Bool("is_master", isMaster),
+			slog.String("err", err.Error()),
+			slog.String("reason", "connection write failed"),
+		)
 		return false, ""
 	}
 
@@ -167,6 +244,13 @@ func (h *handler) leaveRoom(
 	clientID string,
 	isMaster bool,
 ) {
+	slog.Info(
+		"Leaving room",
+		slog.String("room", roomID),
+		slog.String("client_id", clientID),
+		slog.Bool("is_master", isMaster),
+	)
+
 	room, exists := h.getRoom(roomID)
 	if !exists {
 		return
@@ -212,6 +296,13 @@ func (h *handler) handleMsg(
 	payload []byte,
 	isMaster bool,
 ) error {
+	slog.Info(
+		"Handling protocol payload",
+		slog.String("room", roomID),
+		slog.String("client_id", clientID),
+		slog.Bool("is_master", isMaster),
+	)
+
 	room, exists := h.getRoom(roomID)
 	if !exists {
 		return errors.New("invalid room")

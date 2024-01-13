@@ -1,5 +1,5 @@
 import { getPublicIP } from "./ip";
-import { baseURL, wsScheme } from "../config";
+import { RT } from "../config";
 import { type DiscoveredRoomItem } from "../types/room";
 import { emojiBackground } from "../utils/emoji";
 
@@ -19,7 +19,7 @@ class Discovery {
   ): Promise<Discovery | undefined> {
     try {
       const ip = await getPublicIP();
-      const ws = new WebSocket(`${wsScheme}${baseURL}/discover?ip=${ip}`);
+      const ws = new WebSocket(`${RT.disvover}?ip=${ip}`);
 
       return new Discovery(ws, added, removed);
     } catch (e) {

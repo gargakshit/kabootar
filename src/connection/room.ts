@@ -1,6 +1,6 @@
 // skipcq: JS-0108
 import { getPublicIP } from "./ip";
-import { baseURL, httpScheme, iceServers, wsScheme } from "../config";
+import { RT, iceServers } from "../config";
 import { FileDownloader, getFileDownloader } from "../downloader";
 
 interface MasterEventDispatcher {
@@ -61,7 +61,7 @@ class Room<Master extends boolean> {
     file: File,
     dispatcher: RoomEventDispatcher<true>
   ): Promise<Room<true> | undefined> {
-    const response = await fetch(`${httpScheme}${baseURL}/room`, {
+    const response = await fetch(RT.room, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -121,9 +121,9 @@ class Room<Master extends boolean> {
       params.set("id", id);
       params.set("pin", pin);
 
-      const response = await fetch(
-        `${httpScheme}${baseURL}/room?${params.toString()}`
-      ).then((res) => res.json());
+      const response = await fetch(`${RT.room}?${params.toString()}`).then(
+        (res) => res.json()
+      );
 
       return response[0];
     } catch (e) {
@@ -137,7 +137,7 @@ class Room<Master extends boolean> {
     isMaster: boolean
   ): Promise<[WebSocket, string] | undefined> {
     const ws = new WebSocket(
-      `${wsScheme}${baseURL}/ws/${id}?k=${key}&m=${isMaster ? "t" : "f"}`
+      `${RT.roomWSBase}/${id}?k=${key}&m=${isMaster ? "t" : "f"}`
     );
 
     const canConnect = await new Promise<false | [true, string]>((resolve) => {
@@ -171,7 +171,7 @@ class Room<Master extends boolean> {
       return [ws, canConnect[1]];
     }
 
-    if (ws.readyState !== ws.CLOSED || ws.readyState !== ws.CLOSING) {
+    if (ws.readyState !== ws.CLOSED) {
       ws.close();
     }
 
