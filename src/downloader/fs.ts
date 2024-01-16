@@ -5,7 +5,10 @@ export class FSFileDownloader implements FileDownloader {
   private writable: FileSystemWritableFileStream;
   private position: number;
 
-  constructor(public name: string, public size: number) {}
+  constructor(
+    public name: string,
+    public size: number,
+  ) {}
 
   async initialize() {
     try {

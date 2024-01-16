@@ -7,11 +7,20 @@
 
 body {
   @apply bg-black text-white h-[100vh];
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 .heading {
-  font-family: "Public Sans", "Inter", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Public Sans",
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 #root {
